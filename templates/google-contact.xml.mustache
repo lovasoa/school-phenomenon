@@ -1,0 +1,28 @@
+<atom:entry xmlns:atom='http://www.w3.org/2005/Atom'
+        xmlns:gd='http://schemas.google.com/g/2005'
+        xmlns:gContact='http://schemas.google.com/contact/2008'>
+      <atom:category scheme='http://schemas.google.com/g/2005#kind'
+        term='http://schemas.google.com/contact/2008#contact'/>
+      <gd:name>
+         <gd:givenName>{{prenom}}</gd:givenName>
+         <gd:familyName>{{nom}}</gd:familyName>
+      </gd:name>
+      <atom:content type='text'>Contact ajouté automatiquement par le site de devis de School Phenomenon, créé par Ophir LOJKINE.</atom:content>
+      <gd:email rel='http://schemas.google.com/g/2005#work'
+        primary='true'
+        address='{{email}'/>
+      <gd:phoneNumber rel='http://schemas.google.com/g/2005#work'
+        primary='true'>
+       {{telephone}}
+      </gd:phoneNumber>
+      <gd:structuredPostalAddress
+          rel='http://schemas.google.com/g/2005#work'
+          primary='true'>
+        <gd:city>{{ville}}</gd:city>
+        <gd:street>{{adresse}}</gd:street>
+        <gd:region>CA</gd:region>
+        <gd:postcode>{{code-postal}}</gd:postcode>
+        <gd:country>France</gd:country>
+      </gd:structuredPostalAddress>
+     <gContact:groupMembershipInfo deleted='false' href='{{groupId}}'/>
+    </atom:entry>

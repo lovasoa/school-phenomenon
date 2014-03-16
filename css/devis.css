@@ -1,0 +1,69 @@
+/*** Page header ***/
+header {
+	box-shadow: 0 0 5px 0 #777;
+	margin-top:0 !important;
+	padding: 10px 30px;
+}
+
+.brand, .brand > small {
+	display:block;
+}
+
+.brand > small > .amperstand { /* "&" in "Excellence & fashion" */
+	color:#666;
+}
+
+/** Prix total estimé **/
+#prix-devis-boite {
+	width: 300px;
+	position: fixed;
+	top: 150px;
+	right: 40px;
+	z-index:100;
+	opacity:.6;
+	transition:.5s;
+}
+
+#prix-devis-boite:hover {
+	opacity:1;
+	transition:.5s;
+}
+
+@media (max-width: 700px) {
+	#prix-devis-boite {
+		position:static;
+		opacity:1;
+		width:100%;
+	}
+}
+
+#prix-devis-boite > .panel-body {
+	color: green;
+	font-size:2em;
+}
+
+#prix-devis-boite > .panel-footer {
+	font-size: .8em;
+}
+
+/** main **/
+main {
+	width:50%;
+}
+
+/*** Form ***/
+#commande label {
+	margin-right: 25px;
+}
+
+.infogroup {
+	margin-bottom: 20px;
+}
+
+label.fullwidth {
+	width: 100%;
+}
+
+label > input {
+	font-weight: normal;
+}
