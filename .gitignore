@@ -1,1 +1,4 @@
 google_api_info.php
+templates/rendered/*
+templates/cache/*
+
