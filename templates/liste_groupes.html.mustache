@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Id de groupes google — School Phenomenon</title>
+
+	<!-- Bootstrap -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Custom css -->
+	<link href="css/devis.css" rel="stylesheet">
+
+	<!-- Jura font -->
+	<link href='//fonts.googleapis.com/css?family=Jura&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css' />
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	</head>
+	<body>
+	<header class="page-header">
+		<div class="row">
+			<div class="col-md-6 col-xs-12">
+			<h1 class="brand">School Phenomenon <small class="hidden-xs">Excellence <span class="amperstand">&</span> fashion</small></h1>
+			</div>
+
+			<div class="col-md-6 hidden-xs">
+				<h4>Prêt à porter personnalisable pour les étudiants</h4>
+			</div>
+		</div>
+	</header>
+
+	<main class="container">
+		<h1>Liste des id de groupes google</h1>
+
+{{#errors}}
+<div class="panel panel-danger">
+  <p class="panel-heading">Error</p>
+  <p class="panel-body">{{message}}</p>
+</div>
+{{/errors}}
+
+
+{{#authUrl}}
+<p class="well">
+	<a href="{{authUrl}}" class="btn btn-default">Connectez-vous</a> avec votre compte google pour afficher la liste de vos groupes et leur identifiant.
+</p>
+{{/authUrl}}
+
+<table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Nom du groupe</th>
+          <th>Identifiant</th>
+        </tr>
+      </thead>
+      <tbody>
+{{#entry}}
+        <tr>
+          <td>{{title}}</td>
+          <td><code>{{id}}</code></td>
+        </tr>
+{{/entry}}
+      </tbody>
+</table>
+
+	<div>
+		<a class='logout' href='?logout'>Logout</a>
+	</div>
+	</main>
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="js/bootstrap.min.js"></script>
+	</body>
+</html>

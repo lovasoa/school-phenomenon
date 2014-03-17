@@ -1,19 +1,22 @@
 <?php
 require_once("google_api_info.php");
 
-$redirect_uri = "http://localhost/D%C3%A9veloppement/HISTU/test.php";
+$redirect_uri = "http://localhost/D%C3%A9veloppement/HISTU/liste_groupes.php";
 
 require_once ('Google/Client.php');
 require_once ('Google/Http/Request.php');
 
-require_once "load_mustache.php";
+require_once "load_mustache.php"
+require_once "config.php"
+
+$tpl = $mustache->loadTemplate("liste_groupes.html");
 
 session_start();
 
 $client = new Google_Client();
-$client->setApplicationName("Ajout contact School Phenomenon");
+$client->setApplicationName("School Phenomenon");
 $client->setScopes(array(
-    'https://apps-apis.google.com/a/feeds/groups/',
+    'https://www.google.com/m8/feeds/'
 ));
 
 // Documentation: http://code.google.com/googleapps/domain/provisioning_API_v2_developers_guide.html
@@ -23,8 +26,6 @@ $client->setScopes(array(
 $client->setClientId($client_id);
 $client->setClientSecret($client_secret);
 $client->setRedirectUri($redirect_uri);
-//TODO
-//$client->setDeveloperKey('DEVELOPER_KEY');
 
 if (isset($_REQUEST['logout'])) {
     unset($_SESSION['access_token']);
@@ -40,24 +41,29 @@ if (isset($_SESSION['access_token'])) {
 
     $client->setAccessToken($_SESSION['access_token']);
 
-	$token_data = $client->verifyIdToken()->getAttributes();
-
     //Get Email of User ------------------------------------
     // You are now logged in
     // We need the users email address for later use. We can get that here.
-
-    $user_email = $token_data['payload']['email']; // email address
 
 
     $add = new Google_Http_Request("https://www.google.com/m8/feeds/groups/default/full");
 	$add = $client->getAuth()->sign($add);
 
     $submit       = $client->getIo()->executeRequest($add);
-	$groups = simplexml_load_string($submit[0]);
-
-	foreach ($groups->entry as $g) {
-		echo $g->title . " -> ".$g->id."<br />\n";
+	if ($submit[2] !== "200") {
+		die($tpl->render(array(
+			"errors" => array("message" => $submit[2]." : Impossible de joindre google.")
+		)));
 	}
+
+	libxml_use_internal_errors(true);
+	$groups = simplexml_load_string($submit[0]);
+	if ($groups === FALSE) {
+		$groups = array(
+			"errors" => libxml_get_errors()
+		);
+	}
+	echo $tpl->render($groups);
 
     // The access token may have been updated lazily.
     $_SESSION['access_token'] = $client->getAccessToken();
@@ -66,9 +72,9 @@ if (isset($_SESSION['access_token'])) {
 }
 
 if (isset($authUrl)) {
-    print "<a class='login' href='$authUrl'>Connect Me!</a>";
-} else {
-    print "<a class='logout' href='?logout'>Logout</a>";
+    echo $tpl->render(array(
+    	"authUrl" => $authUrl
+    ));
 }
 
 ?>
