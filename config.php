@@ -1,4 +1,9 @@
 <?php
+/* Adresse gmail de l'administrateur. Seule une personne connectée avec un 
+compte google correspondant à l'une de ces adresses pourra importer les 
+*/
+const GOOGLE_EMAILS_ADMINS = "school-phenomenon@gmail.com pere.jobs@gmail.com";
+
 /* Définit l'id du groupe dans lequel seront enregistrés les contacts
 Vous pouvez trouver quoi mettre ici à partir du script liste_groupes.php
 */

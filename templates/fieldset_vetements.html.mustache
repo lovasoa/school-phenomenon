@@ -1,0 +1,33 @@
+{{#articles}}
+<fieldset id="vetements">
+	<div class="row">
+
+{{#liste_articles}}
+	  <div class="col-sm-12 col-md-4">
+		<div class="thumbnail">
+		  <img class="img-responsive" width="300" height="200" src="images/modeles/{{id}}.svg" alt="{{nom_complet}}">
+		  <div class="caption">
+			<h3>{{nom_complet}}</h3>
+
+			<div>Quantité désirée:
+				<div class="input-group">
+				<input id="{{id}}-nbr" name="{{id}}[nbr]" type="number" min="0" class="form-control" placeholder="0" />
+				<span class="input-group-btn" >
+					<button
+						class="btn btn-default bouton-personnaliser"
+						id="personnaliser-{{id}}"
+						data-toggle="modal"
+						data-target="#modal-{{id}}" >
+						Personnaliser
+					</button>
+				</span>
+				</div>
+			</div>
+
+		  </div><!--caption-->
+		</div><!--thumbnail-->
+	  </div><!--column-->
+{{/liste_articles}}
+	</div> <!--row-->
+</fieldset>
+{{/articles}}

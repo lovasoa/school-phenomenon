@@ -16,6 +16,7 @@ session_start();
 $client = new Google_Client();
 $client->setApplicationName("School Phenomenon");
 $client->setScopes(array(
+	'https://www.googleapis.com/auth/userinfo.email',
 	'https://www.google.com/m8/feeds/',
 ));
 
@@ -46,18 +47,40 @@ if (isset($_REQUEST['logout'])) {
 }
 
 if (isset($_GET['code'])) {
-    $client->authenticate($_GET['code']);
-    $_SESSION['access_token'] = $client->getAccessToken();
-    header('Location: ' . $redirect_uri);
+	try {
+		$client->authenticate($_GET['code']);
+		$_SESSION['access_token'] = $client->getAccessToken();
+		header("Location: ".$redirect_uri);
+		die();
+    } catch (Exception $e) {
+		fatal_error($e, "Authentification impossible");
+	}
 }
 
 if (isset($_SESSION['access_token'])) {
 
     $client->setAccessToken($_SESSION['access_token']);
 
-    //-------------------------------------
-    // How to save an entry to your My Contacts List
-    // This is an example contact XML that Google is looking for.
+	// On est maintenant identifié
+
+    //------------------------------------
+    // Vérifie que l'utilisateur est autorisé
+	try {
+		$token_data = $client->verifyIdToken()->getAttributes();
+		$user_email = $token_data["payload"]["email"];
+	} catch (Exception $e) {
+		fatal_error( $e,
+					"Impossible d’obtenir les informations du token");
+	}
+
+	if ( !in_array($user_email, explode(' ', GOOGLE_EMAILS_ADMINS)) ) {
+		fatal_error("Le compte avec lequel vous êtes identifié ne permet pas d'effectuer cette action. Vous pouvez ajouter des comptes autorisés à partir du fichier config.php",
+				"Autorisation refusée");
+	}
+
+
+	// -----------------
+	// Ajout du contact
 	if (! isset($_SESSION['contact_id'])) {
 		fatal_error("Aucun contact à ajouter n’a été fourni.", "Aucun contact à ajouter");
 	}
@@ -65,13 +88,13 @@ if (isset($_SESSION['access_token'])) {
 	unset($_SESSION['contact_id']);
 
     $contact_filename = sprintf(CONTACT_FILENAME_FORMAT, $contact_id);
-	$contact = @file_get_contents($contact_filename);
 
-	if ($contact === FALSE) {
+	if ( !file_exists($contact_filename) ) {
 		fatal_error("Le contact à ajouter n'est plus présent sur le serveur. Cette erreur se produit notemment lorsque vous tentez d’ajouter le même contact pour la deuxième fois.",
 					"Contact introuvable");
 	}
 
+	$contact = @file_get_contents($contact_filename);
     $add = new Google_Http_Request("https://www.google.com/m8/feeds/contacts/default/full/");
     $add->setRequestMethod("POST");
     $add->setPostBody($contact);

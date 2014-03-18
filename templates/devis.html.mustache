@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Devis — School Phenomenon</title>
+
+	{{> include_links.html}}
+	</head>
+	<body>
+	{{> header.html}}
+
+	<main class="container">
+		<h1>Devis</h1>
+		<p>Vous allez maintenant pouvoir personnaliser votre commande</p>
+
+	<div class="panel panel-success" id="prix-devis-boite">
+	  <div class="panel-heading">Prix total estimé</div>
+	  <div class="panel-body">
+		<strong id="prix">0</strong> €
+	  </div>
+	  <div class="panel-footer">
+	  	<strong style="display:none">Vous avez demandé des personnalisations qui peuvent faire augmenter le prix.</strong>
+	  	Le prix définitif vous sera communiqué après examen de votre commande.
+	  </div>
+	</div>
+
+		<form role="form" id="commande" method="post" action="validation_devis.php" >
+		<input type="hidden" id="id_commande" name="id_commande" value="{{id_commande}}" />
+		<h2>À propos de vous</h2>
+		{{> fieldset_infos_demandeur.html}}
+
+		<h2>Personnalisation de la commande</h2>
+		{{> fieldset_vetements.html}}
+		{{> articles_modals.html}}
+
+		<div class="infogroup">
+		<label>Date de livraison souhaitée:
+		<input id="date-livraison" name="date-livraison"  type="text"  required class="form-control" placeholder="jj/mm/aaaa" />
+		</label>
+		</div>
+
+		<input type="submit" value="Valider la commande" class="btn btn-primary" />
+		</form>
+
+	</main>
+
+	{{> include_scripts.html}}
+	</body>
+</html>
+

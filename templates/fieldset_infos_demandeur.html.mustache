@@ -1,0 +1,56 @@
+<fieldset id="demandeur">
+	<div class="infogroup">
+	<label>Prénom :
+	<input id="prenom" name="prenom"  type="text" required class="form-control" placeholder="Votre prénom" />
+	</label>
+
+	<label>Nom de famille :
+	<input id="nom" name="nom"  type="text" required class="form-control"  placeholder="Votre nom" />
+	</label>
+
+	<label>Nom de votre association :
+	<input id="association" name="association"  type="text" required class="form-control"  data-toggle="tooltip" data-placement="bottom" data-trigger=" click hover focus" data-container="body" title="Nom de l’association ou du groupe au nom duquel vous effectuez la commande" placeholder="Votre association" />
+	</label>
+	</div>
+
+	<div class="infogroup row">
+	<div class="col-md-6">
+		<label for="email">Adresse de messagerie électronique: </label>
+		<input id="email" name="email"  type="email" required  class="form-control" placeholder="Votre adresse email"/>
+	</div>
+	<div class="col-md-6">
+		<label for="telephone">Numéro de téléphone: </label>
+		<input id="telephone" name="telephone"  type="tel" required  class="form-control" placeholder="Votre numéro de téléphone"/>
+	</div>
+	</div>
+
+	<div class="infogroup" id="date-naissance">
+		<h3>Date de naissance</h3>
+		<label>Jour:
+		<input id="date-naissance-jour" name="date-naissance-jour"  type="number" required  class="form-control" placeholder="N°" min=1 max=31 />
+		</label>
+
+		<label>Numéro du mois:
+		<input id="date-naissance-mois" name="date-naissance-mois"  type="number" required  class="form-control" placeholder="Mois" min=1 max=12 />
+		</label>
+
+		<label>Année:
+		<input id="date-naissance-annee" name="date-naissance-annee"  type="number" required  class="form-control" placeholder="Année" min=1900 max=2900 />
+		</label>
+		<p id="alerte-age" class="alert alert-danger" style="display:none"><strong>Attention!</strong> Vous devez avoir plus de 18 ans pour pouvoir signer un devis.</p>
+	</div>
+
+	<div class="infogroup">
+		<h3>Adresse de livraison</h3>
+		<label for="adresse">Numéro et nom de la voie: </label>
+		<input id="adresse" name="adresse"  type="text" required  class="form-control" placeholder="Numéro et nom de la voie"/>
+
+		<label>Code postal:
+		<input id="code-postal" name="code-postal"  type="text" required  class="form-control" placeholder="Code postal"/>
+		</label>
+
+		<label>Ville:
+		<input id="ville" name="ville"  type="text" required  class="form-control" placeholder="Ville"/>
+		</label>
+	</div>
+</fieldset>

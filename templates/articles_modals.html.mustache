@@ -1,0 +1,35 @@
+{{#articles}}
+
+{{#liste_articles}}
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="modal-{{id}}">
+  <div class="modal-dialog modal-lg">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 class="modal-title" id="myModalLabel">{{nom_complet}}</h3>
+			</div>
+
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12 col-md-8">
+						<img class="img-responsive" src="images/modeles/{{id}}.svg" />
+					</div>
+					<div class="col-sm-12 col-md-4">
+						<div class="couleurs">
+							{{#choix_couleur_principale}}
+								<input type="text" id="couleur-principale-{{id}}"
+									name="{{id}}[couleur_principale]"
+									class="form-control" />
+							{{/choix_couleur_principale}}
+						</div>
+					</div><!--col-->
+				</div> <!--row-->
+			</div> <!--modal-body-->
+
+		</div> <!-- modal-content-->
+  </div>
+</div>
+{{/liste_articles}}
+
+{{/articles}}

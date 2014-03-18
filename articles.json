@@ -1,0 +1,21 @@
+{
+	"liste_articles" : [
+		{
+			"id" : "pull",
+			"nom_complet" : "Pull non zippé",
+			"choix_couleurs" : [
+				{
+					"id" : "couleur_principale",
+					"couleurs" : [
+						{"num":30, "couleurs":[]},
+						{"num":70, "couleurs":["22","33","76","noir"]}
+					],
+				}
+			]
+		},
+		{
+			"id" : "jogging",
+			"nom_complet" : "Jogging"
+		}
+	]
+}
