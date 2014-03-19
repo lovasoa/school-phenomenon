@@ -1,6 +1,6 @@
 <?php
 require_once "load_mustache.php";
-require_once "config.php";
+require_once "config/config.php";
 
 function create_gcontact_file ($data) {
 	global $mustache;

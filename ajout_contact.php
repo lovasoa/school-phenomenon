@@ -7,7 +7,7 @@ require_once ('Google/Client.php');
 require_once ('Google/Http/Request.php');
 
 require_once "load_mustache.php";
-require_once "config.php";
+require_once "config/config.php";
 
 $tpl = $mustache->loadTemplate("ajout_contact.html");
 
@@ -74,7 +74,7 @@ if (isset($_SESSION['access_token'])) {
 	}
 
 	if ( !in_array($user_email, explode(' ', GOOGLE_EMAILS_ADMINS)) ) {
-		fatal_error("Le compte avec lequel vous êtes identifié ne permet pas d'effectuer cette action. Vous pouvez ajouter des comptes autorisés à partir du fichier config.php",
+		fatal_error("Le compte avec lequel vous êtes identifié ne permet pas d'effectuer cette action. Vous pouvez ajouter des comptes autorisés à partir du fichier config/config.php",
 				"Autorisation refusée");
 	}
 

@@ -1,3 +1,12 @@
+/*** Police Jura ***/
+@font-face {
+  font-family: 'Jura';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Jura Regular'), local('Jura-Regular'), url(../fonts/jura.woff) format('woff');
+}
+
+
 /*** Page header ***/
 header {
 	box-shadow: 0 0 5px 0 #777;
@@ -69,4 +78,24 @@ label > input {
 }
 
 /*** Personnalisation vêtements ***/
+.modal-extralarge {
+	width:90%;
+}
+.zone-personnalisation > img {
+	width:100%;
+}
+.dropdown-colors {
+	top:auto !important;
+	padding:10px;
+	width:100%;
+    max-height:250px;
+    overflow:auto;
+}
 
+.color-preview, .dropdown-colors > div {
+	width:40px;height:25px;
+	display:inline-block;
+	margin:1px;
+	border-radius:2px;
+	border:1px solid black;
+}

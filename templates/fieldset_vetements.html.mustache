@@ -11,15 +11,19 @@
 
 			<div>Quantité désirée:
 				<div class="input-group">
-				<input id="{{id}}-nbr" name="{{id}}[nbr]" type="number" min="0" class="form-control" placeholder="0" />
+				<input id="{{id}}-nbr" name="{{id}}[nbr]"
+						type="number" min="0"
+						class="form-control" placeholder="0"
+						data-toggle="tooltip" data-trigger="manual" />
 				<span class="input-group-btn" >
-					<button
+					<a href="#"
 						class="btn btn-default bouton-personnaliser"
 						id="personnaliser-{{id}}"
 						data-toggle="modal"
-						data-target="#modal-{{id}}" >
+						data-target="#modal-{{id}}"
+						disabled >
 						Personnaliser
-					</button>
+					</a>
 				</span>
 				</div>
 			</div>

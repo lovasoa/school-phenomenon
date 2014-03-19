@@ -2,7 +2,7 @@
 
 {{#liste_articles}}
 <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="modal-{{id}}">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg modal-extralarge">
 		<div class="modal-content">
 
 			<div class="modal-header">
@@ -12,16 +12,28 @@
 
 			<div class="modal-body">
 				<div class="row">
-					<div class="col-sm-12 col-md-8">
-						<img class="img-responsive" src="images/modeles/{{id}}.svg" />
+					<div id="zone-personnalisation-{{id}}" class="col-sm-12 col-md-10 col-lg-8 zone-personnalisation">
+						<img src="images/modeles/{{id}}.svg" alt="{{nom_complet}}" />
 					</div>
-					<div class="col-sm-12 col-md-4">
+					<div class="col-sm-12 col-md-2 col-lg-4">
 						<div class="couleurs">
-							{{#choix_couleur_principale}}
-								<input type="text" id="couleur-principale-{{id}}"
-									name="{{id}}[couleur_principale]"
-									class="form-control" />
-							{{/choix_couleur_principale}}
+							{{#choix_couleurs}}
+							<div class="choose-color">
+								<label for="couleur-{{type_couleur}}-{{id}}">{{nom_complet}}</label>
+								<input id="couleur-{{type_couleur}}-{{id}}"
+										name="{{id}}[couleurs][{{type_couleur}}]"
+										type="text"
+										class="form-control" placeholder="blanc"
+										data-toggle="dropdown" />
+							    <div id="dropdown-colors-{{type_couleur}}-{{id}}"
+							    	class="dropdown-menu dropdown-colors"
+							    	data-target="#couleur-{{type_couleur}}-{{id}}" >
+									{{! This will be filled via javascript on the client side}}
+								</div>
+							</div>
+							{{/choix_couleurs}}
+
+
 						</div>
 					</div><!--col-->
 				</div> <!--row-->
