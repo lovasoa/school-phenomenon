@@ -31,21 +31,34 @@
 		</label>
 		</div>
 
+		<div class="infogroup well">
+		<label for"infos-supplementaires">Informations supplémentaires: </label>
+		<textarea id="infos-supplementaires" name="infos-supplementaires"
+					 class="form-control" rows="5"
+					 placeholder="Y a-t-il quelque chose dont vous voudriez que la personne qui va traiter votre commande soit au courant?"
+		></textarea>
+		</div>
+
+
 	<div class="panel panel-success" id="prix-devis-boite">
 	  <div class="panel-heading">Prix total estimé</div>
 	  <div class="panel-body">
-		<strong id="prix">0</strong> €
+		<strong id="prix-total">0</strong> {{ articles.devise }}
 	  </div>
-	  <div class="panel-footer">
-	  	<strong style="display:none">Vous avez demandé des personnalisations qui peuvent faire augmenter le prix.</strong>
+	  <div class="panel-footer"
+	  	title="Lorsque vous commandez un petit nombre d’articles, ou que vous demandez certaines options, nous ne pouvons calculer le prix automatiquement.&#10; Nous vous communiquons alors le prix définitif après examen de votre commande.">
+	  	<strong style="display:none" id="prix-total-varie" >Vous avez demandé des options qui peuvent faire varier le prix.</strong>
 	  	Le prix définitif vous sera communiqué après examen de votre commande.
 	  </div>
 	</div>
 
-		<input type="submit" value="Valider la commande" class="btn btn-primary" />
+		<input type="submit" value="Valider la commande" class="btn btn-primary btn-lg" />
 		</form>
 
 	</main>
+	<footer>
+		Page de devis de <strong>School Phenomenon</strong>, réalisée par <a href="https://github.com/lovasoa">Ophir LOJKINE</a>.
+	</footer>
 
 	{{> include_scripts.html}}
 	<!-- Script perso -->

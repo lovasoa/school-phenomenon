@@ -18,10 +18,21 @@ if ($articles === NULL) {
 	);
 }
 
+//Ajout des identifiants de personnalisation
+$persos = $articles->personnalisations;
+for($i=0; $i<count($persos); $i++) {
+	$perso = $persos[$i];
+	$perso->perso_id = str_replace(' ', '_', $perso->perso);
+}
+
 echo $tpl->render(array(
 	"id_commande" => rand(),
 	"articles" => $articles,
-	"errors" => $erreurs
+	"errors" => $erreurs,
+	"html_id" => function($unescaped_id, Mustache_LambdaHelper $helper) {
+		$invalide = "/^[^a-zA-Z]|[^a-zA-Z0-9.:\\-]/";
+		return preg_replace($invalide, "_",  $helper->render($unescaped_id));
+  	}
 ));
 
 ?>

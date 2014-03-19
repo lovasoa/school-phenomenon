@@ -19,7 +19,8 @@
 						<img src="images/modeles/{{id}}.svg" alt="{{nom_complet}}" />
 					</div>
 					<div class="col-sm-12 col-md-2 col-lg-4">
-						<div class="couleurs">
+						<fieldset class="couleurs">
+							<h3>Choix des couleurs</h3>
 							{{#choix_couleurs}}
 							<div class="choose-color">
 								<label for="couleur-{{type_couleur}}-{{id}}">{{nom_complet}}</label>
@@ -36,9 +37,19 @@
 								</div>
 							</div>
 							{{/choix_couleurs}}
+						</fieldset>
 
+						<fieldset class="options-personnalisation">
+							<h3>Options de personnalisation</h3>
+							{{#personnalisations}}
+							<label title="{{#prix}}&ge; {{nbr}} articles: {{#approx}}environ {{/approx}}{{prix}}{{devise}}&#10;{{/prix}}"
+								><input type="checkbox"
+											class="checkbox-perso"
+											name="{{id}}[perso][{{perso}}]"
+											id="{{#html_id}}perso-{{id}}-{{perso}}{{/html_id}}" />&nbsp;{{perso}}</label>
+							{{/personnalisations}}
+						</fieldset>
 
-						</div>
 					</div><!--col-->
 				</div> <!--row-->
 			</div> <!--modal-body-->

@@ -99,3 +99,9 @@ label > input {
 	border-radius:2px;
 	border:1px solid black;
 }
+
+/*** footer ***/
+footer {
+	padding:60px 0 20px;
+	text-align:center;
+}

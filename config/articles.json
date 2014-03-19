@@ -59,6 +59,30 @@
 		}
 	],
 
+	"personnalisations" : [
+		{
+			"perso" : "Surnoms individuels",
+			"nbr_min" : 30,
+			"prix" : [
+				{"nbr":30,"prix":5}
+			]
+		},
+		{
+			"perso" : "broderie",
+			"nbr_min" : 30,
+			"prix" : [
+				{"nbr":30,"prix":5,"approx":true},
+				{"nbr":70,"prix":0}
+			]
+		},
+		{
+			"perso" : "feutrine",
+			"nbr_min" : 70,
+			"prix" : [
+				{"nbr":70,"prix":0}
+			]
+		}
+	],
 	"nuancier" : [
 		{"couleur":"#fff","num":"blanc"},
 		{"couleur":"#000","num":"noir"},
