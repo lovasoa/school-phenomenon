@@ -7,7 +7,10 @@
 
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h3 class="modal-title" id="myModalLabel">{{nom_complet}}</h3>
+				<h3 class="modal-title" id="modal-title-{{id}}">
+					{{nom_complet}} <small>(prix à l’unite: <strong id="prix-unite-{{id}}" class="prix-unite"></strong>).
+					<span class="prix-varie hidden" id="prix-varie-{{id}}">Le prix dépendra de votre projet</span></small>
+				</h3>
 			</div>
 
 			<div class="modal-body">
@@ -23,7 +26,8 @@
 								<input id="couleur-{{type_couleur}}-{{id}}"
 										name="{{id}}[couleurs][{{type_couleur}}]"
 										type="text"
-										class="form-control" placeholder="blanc"
+										class="form-control"
+										placeholder="Numéro de la couleur dans le nuancier"
 										data-toggle="dropdown" />
 							    <div id="dropdown-colors-{{type_couleur}}-{{id}}"
 							    	class="dropdown-menu dropdown-colors"

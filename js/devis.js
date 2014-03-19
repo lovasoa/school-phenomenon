@@ -29,6 +29,21 @@ $(function(){
 
 });
 
+function selection_nbr (liste, nbr, greater) {
+	/* liste est une liste d’objets ayant un attribut 'nbr'.
+		nbr est un nombre
+		Retourne le premier élément de la liste tel que nbr < element.nbr
+		ou null si il n'existe pas de tel élément
+	*/
+	var step = greater ? -1 : 1;
+	for (var i=0, l=liste.length; i<l; i++) {
+		var idx = greater ? l-1-i : i;
+		var cmp = (nbr - liste[idx].nbr) * step;
+		if (cmp < 0 || (greater && cmp==0)) return liste[idx];
+	}
+	return null;
+}
+
 // Fill the colors dropdowns
 $.ajax({
 	"url" : "config/articles.json",
@@ -81,10 +96,11 @@ $.ajax({
 					.data('article-id', article.id)
 					.attr('min', min)
 					.attr("title", "Impossible de passer une commande de moins de "+min+" articles.")
-					.on("change", article, function onNbrChange(event){
+					.on("change focus blur mouseup", article, function onNbrChange(event){
 						var $this = $(this);
 						var nbr = parseInt($this.val()) || 0;
 						var article = event.data;
+
 						// Gestion du nombre d'article minimum
 						var $btn = $("#personnaliser-"+article.id);
 						if (nbr === 0) {
@@ -100,24 +116,24 @@ $.ajax({
 							$this.tooltip("show");
 							$btn.attr("disabled", true);
 						}
+
 						//Gestion des restrictions de couleur sur les petits nombres d'articles
 						var article_id = article.id;
 						for (var j=0; j<article.choix_couleurs.length; j++) {
 							var choix_couleur = article.choix_couleurs[j];
 							var restrictions = choix_couleur.restriction_couleurs || [];
 							var couleurs = null; // Pas de restriction par défaut
-							for (var n=0; n<restrictions.length && !couleurs; n++) {
-								if (nbr < restrictions[n].nbr)
-									couleurs = restrictions[n].couleurs;
-							}
+							var restriction = selection_nbr(restrictions, nbr);
 							var dropdown = $("#dropdown-colors-"+choix_couleur.type_couleur+"-"+article_id),
 								group = dropdown.parent(".choose-color").show()
 								divs = dropdown.find("div").show();
 
-							if (couleurs === null) continue; // Pas de restriction à appliquer
+							if (restriction === null) continue; // Pas de restriction à appliquer
 
+							var couleurs = restriction.couleurs;
 							if (couleurs.length === 0) {
 								// Si il n’y a aucune couleur à choisir, on cache le champ de texte
+								group.find("input").val('').trigger('change');
 								group.hide();
 							} else {
 								// Sinon, on filtre les couleurs affichées
@@ -130,6 +146,17 @@ $.ajax({
 								}
 							}
 						}
+
+						// Affichage des prix à l’unité
+						var $prix = $("#prix-unite-"+article.id);
+						var $prix_varie = $("#prix-varie-"+article.id).addClass("hidden");
+						var prix_obj = selection_nbr(article.prix, nbr, true);
+						var prix_str = prix_obj.prix + conf.devise;
+						if (prix_obj.approx) {
+							prix_str = 'environ ' + prix_str;
+							$prix_varie.removeClass("hidden");
+						}
+						$prix.text(prix_str);
 					});
 		}
 	},

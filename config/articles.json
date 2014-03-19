@@ -1,5 +1,6 @@
 {
 	"commande_nbr_min" : 30,
+	"devise" : "€",
 	"liste_articles" : [
 		{
 			"id" : "pull",
@@ -28,7 +29,7 @@
 				}
 			],
 			"prix" : [
-				{"nbr":30, "prix":null},
+				{"nbr":30, "prix":35, "approx":true},
 				{"nbr":70, "prix":30},
 				{"nbr":100, "prix":25}
 			]
@@ -37,7 +38,24 @@
 			"id" : "jogging",
 			"nom_complet" : "Jogging",
 			"nbr_min" : 70,
-			"choix_couleurs" : []
+			"choix_couleurs" : [
+				{
+					"type_couleur" : "principale",
+					"nom_complet" : "Couleur principale",
+					"restriction_couleurs" : []
+				},
+				{
+					"type_couleur" : "cordons",
+					"nom_complet" : "Couleur des cordons",
+					"restriction_couleurs" : [
+						{"nbr":70, "couleurs":[]}
+					]
+				}
+			],
+			"prix" : [
+				{"nbr":70, "prix":29},
+				{"nbr":100, "prix":25}
+			]
 		}
 	],
 
