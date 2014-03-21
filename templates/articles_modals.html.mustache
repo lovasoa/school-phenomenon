@@ -18,7 +18,7 @@
 					<div id="zone-personnalisation-{{id}}" class="col-sm-12 col-md-10 col-lg-8 zone-personnalisation">
 						<img src="images/modeles/{{id}}.svg" alt="{{nom_complet}}" />
 					</div>
-					<div class="col-sm-12 col-md-2 col-lg-4">
+					<div class="col-sm-12 col-md-2 col-lg-4" class="personnalisation">
 						<fieldset class="couleurs">
 							<h3>Choix des couleurs</h3>
 							{{#choix_couleurs}}
@@ -38,7 +38,13 @@
 							</div>
 							{{/choix_couleurs}}
 						</fieldset>
-
+						<fieldset class="images-personnalisation">
+							<h3>Images personnalisées</h3>
+							<input type="file" class="form-control image-personnalisation"
+									data-zone-personnalisation = "#zone-personnalisation-{{id}}"
+									name="{{id}}[files][][file]"
+									accept="image/*" />
+						</fieldset>
 						<fieldset class="options-personnalisation">
 							<h3>Options de personnalisation</h3>
 							{{#personnalisations}}

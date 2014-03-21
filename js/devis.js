@@ -1,5 +1,5 @@
 /** devis.js - pour school phenomenon
-* auteur: Ophir LOJKINE
+* @author: Ophir LOJKINE
 **/
 
 !function(){/*Code isolation*/

@@ -39,6 +39,9 @@ header {
 }
 
 @media (max-width: 700px) {
+	main {
+		width: 100% !important;
+	}
 	#prix-devis-boite {
 		position:static;
 		opacity:1;
@@ -84,6 +87,11 @@ label > input {
 .zone-personnalisation > img {
 	width:100%;
 }
+
+.personnalisation > fieldset {
+	margin-bottom:20px;
+}
+
 .dropdown-colors {
 	top:auto !important;
 	padding:10px;
@@ -98,6 +106,16 @@ label > input {
 	margin:1px;
 	border-radius:2px;
 	border:1px solid black;
+}
+
+.zone-personnalisation {
+	padding: 0;
+	position: relative;
+}
+
+.zone-personnalisation .image-perso-deplacable {
+	position: absolute !important;
+	top:0; left:0;
 }
 
 /*** footer ***/
