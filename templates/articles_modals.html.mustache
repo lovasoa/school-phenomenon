@@ -40,10 +40,18 @@
 						</fieldset>
 						<fieldset class="images-personnalisation">
 							<h3>Images personnalisées</h3>
+							<p><small>Choisissez les logos et les images qui apparaîtront sur votre vêtement. Vous pourrez ensuite les <strong>positionner</strong> et les <strong>redimentionner</strong> à la souris.</small></p>
+							<ul>
+							<li data-zone-personnalisation = "#zone-personnalisation-{{id}}">
 							<input type="file" class="form-control image-personnalisation"
-									data-zone-personnalisation = "#zone-personnalisation-{{id}}"
 									name="{{id}}[files][][file]"
 									accept="image/*" />
+							<input type="hidden" name="{{id}}[files][][x]" class="x" value="-1"/>
+							<input type="hidden" name="{{id}}[files][][y]" class="y" value="-1"/>
+			      	<input type="hidden" name="{{id}}[files][][w]" class="w" value="-1"/>
+							<input type="hidden" name="{{id}}[files][][h]" class="h" value="-1"/>
+							</li>
+							</ul>
 						</fieldset>
 						<fieldset class="options-personnalisation">
 							<h3>Options de personnalisation</h3>

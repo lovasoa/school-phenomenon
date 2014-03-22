@@ -113,7 +113,8 @@ label > input {
 	position: relative;
 }
 
-.zone-personnalisation .image-perso-deplacable {
+.zone-personnalisation .ui-wrapper {
+  /*Les objets qui sont "resizable" sont placés par jQuery UI dans une div .ui-wrapper*/
 	position: absolute !important;
 	top:0; left:0;
 }
