@@ -5,6 +5,7 @@
 		{
 			"id" : "pull",
 			"nom_complet" : "Pull non zippé",
+			"nbr_min" : 30,
 			"choix_couleurs" : [
 				{
 					"type_couleur" : "principale",

@@ -12,7 +12,8 @@
 			<div>Quantité désirée:
 				<div class="input-group">
 				<input id="{{id}}-nbr" name="{{id}}[nbr]"
-						type="number" min="0"
+						type="number" min="{{nbr_min}}"
+						title="Impossible de passer une commande de moins de {{nbr_min}} articles."
 						class="form-control article-nbr" placeholder="0"
 						data-toggle="tooltip" data-trigger="manual" />
 				<span class="input-group-btn" >

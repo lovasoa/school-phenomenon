@@ -17,45 +17,6 @@ selection_nbr = (liste, nbr, greater=false) ->
 html_id = (str) -> str.replace RegExp(" ", "g"), "_"
   # En html5, la seule restriction sur les id est qu'ils ne doivent pas contenir d'espaces
   # http://www.w3.org/TR/html-markup/global-attributes.html#common.attrs.id
-  
-
-maj_prix = ->
-  # Calcul et affichage des prix à l’unité et du prix total
-  prix_total =
-    prix: 0
-    approx: false
-
-  ajout_prix = (p1, p2) ->
-    p1.prix += p2.prix | 0
-    p1.approx = !!(p1.approx or p2.approx)
-
-
-  for article in conf.liste_articles
-    # Calcul du prix à l’unité
-    nbr = $("#" + article.id + "-nbr").val() | 0
-    $prix = $("#prix-unite-" + article.id)
-    $prix_varie = $("#prix-varie-" + article.id).addClass("hidden")
-    prix_obj = $.extend({}, selection_nbr(article.prix, nbr, true)) # Object copy
-    continue  if prix_obj is null
-
-    # Calcul du prix des personnalisations supplémentaires
-    for perso in conf.personnalisations
-      input_id = html_id("perso-" + article.id + "-" + perso.perso)
-      if $("#" + input_id).is(":checked")
-        prix_perso_obj = selection_nbr(perso.prix, nbr, true)
-        ajout_prix prix_obj, prix_perso_obj  if prix_perso_obj and prix_perso_obj.prix
-
-    prix_str = prix_obj.prix + conf.devise
-    if prix_obj.approx
-      prix_str = "environ " + prix_str
-      $prix_varie.removeClass "hidden"
-    $prix.text prix_str
-    prix_obj.prix *= nbr # Prix total de ce type d'articles
-    ajout_prix prix_total, prix_obj
-
-  $("#prix-total").text prix_total.prix
-  $("#prix-total-varie").toggle prix_total.approx
-  return prix_total
 
 #Ajout des "tooltips" (informations supplémentaires sur les champs à remplir)
 $("#association").tooltip()
@@ -70,29 +31,6 @@ $("#date-naissance input").on "blur change keyup", ->
     date_dixhuitans = new Date(a + 18, m - 1, j)
     action = (if (date_dixhuitans > (new Date())) then "show" else "hide")
     $("#alerte-age")[action] 500
-
-$(".article-nbr").on "change mouseup keyup blur", maj_prix
-$(".checkbox-perso").on "change mouseup keyup blur", maj_prix
-
-
-gestion_nbr_articles = (article) ->
-  # Gestion du nombre d'article minimum
-  id = article.id
-  $nbrInput = $("##{id}-nbr")
-  nbr = parseInt($nbrInput.val()) or 0
-  $btn = $("#personnaliser-#{id}")
-  if nbr is 0
-    $nbrInput.parent().removeClass("has-error").removeClass "has-success"
-    $nbrInput.tooltip "hide"
-    $btn.attr "disabled", true
-  else if nbr >= $nbrInput.attr("min")
-    $nbrInput.parent().removeClass("has-error").addClass "has-success"
-    $nbrInput.tooltip "hide"
-    $btn.attr "disabled", false
-  else
-    $nbrInput.parent().addClass("has-error").removeClass "has-success"
-    $nbrInput.tooltip "show"
-    $btn.attr "disabled", true
 
 conf = {}
 # Fill the colors dropdowns
@@ -129,14 +67,19 @@ $.ajax
         $(this).append $preview.clone(true)
         return
 
+    window.commande = new Commande
     # Gestion des articles
     for article in liste_articles
+      controleur_article = new Article article
+      commande.ajout_article controleur_article
+
+      for option in conf.personnalisations
+        controleur_article.options.ajout option
+
+
       min = article.nbr_min or conf.commande_nbr_min
       $nbrInput = $("#" + article.id + "-nbr")
                       .data("article-id", article.id)
-                      .attr("min", min)
-                      .attr("title", "Impossible de passer une commande de moins de " + min + " articles.")
-                      .on('change focus blur keyup mouseup', -> gestion_nbr_articles(article))
                       .on("change focus blur mouseup", article, (event) ->
                         $this = $(this)
                         nbr = parseInt($this.val()) or 0

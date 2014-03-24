@@ -53,9 +53,9 @@ class ArbreValeurs extends EventEmitter
 
 class ArbrePrix extends ArbreValeurs
   defaultVal: 0
-  constructor: () ->
+  constructor: (prix, nbr=0) ->
     super
-    @nbr = 0
+    @nbr = nbr
   setNbr: (nbr) ->
     @nbr = parseInt(nbr)
     @_maj()
@@ -76,6 +76,32 @@ class ArbreDelais extends ArbreValeurs
 ###
 Controleurs
 ###
+class Options
+  constructor: (article_id)->
+    # Une option est une personnalisation
+    @prix_options_tab = []
+    @options = []
+    @prix_options = new ArbrePrix 0, 1
+    @nbr = 0
+    @article_id = article_id
+  ajout: (option) ->
+    @perso_id = html_id(option.perso)
+    arbre = new ArbrePrix 0
+    @prix_options_tab.push(arbre)
+    @prix_options.ajout_enfant(arbre)
+    @options.push option
+    $checkbox = $(html_id("#perso-#{@article_id}-#{@perso_id}"))
+    $checkbox.change (e) =>
+        arbre.setNbr (if $checkbox.is(':checked') then 1 else 0)
+        arbre.setVal @calcPrix option,@nbr
+
+  calcPrix: (option, nbr) =>
+    prixobj = selection_nbr option.prix, nbr, true
+    if prixobj then prixobj.prix else 0
+  setNbr: (nbr) ->
+    @nbr = nbr
+    for opt,i in @prix_options_tab
+      opt.setVal(@calcPrix(@options[i], nbr))
 
 class Article
   constructor: (article_data, nuancier) ->
@@ -83,14 +109,19 @@ class Article
     @vue.on 'majNbr', @setNbr
     @vue.on 'majCouleurPrincipale', @setCouleur
     @id = article_data.id
-    @setNbr(0)
     @couleur = 'noir'
-    @delais_data = article_data.delais
+    @article_data = article_data
+    @delais_data = article_data.delais or []
+    @prix_data = article_data.prix or []
     @arbrePrix = new ArbrePrix
-    @arbreDelais = new ArbreDelais
+    @arbreDelais = new ArbreDelais 0
+    @options = new Options(@id)
+    @arbrePrix.ajout_enfant @options.prix_options
+    @arbrePrix.on 'maj', (prix) => @vue.setPrix prix/@arbrePrix.nbr
+    @setNbr 0
 
   majDelais: (nbr) ->
-    delaisobj = selection_nbr delais_data,nbr,true
+    delaisobj = selection_nbr @delais_data,nbr,true
     if delaisobj?
       delai = delaisobj.delai
       if delaisobj.exceptions
@@ -100,27 +131,36 @@ class Article
             delai = e.nouvdelai
       @arbreDelais.setVal(delai)
   setNbr: (nbr) =>
+    nbr = parseInt(nbr)
+    if isNaN(nbr) or nbr is 0 then return @vue.setValid "troppeu"
+    if nbr < @article_data.nbr_min then return @vue.setValid "invalide"
+    @vue.setValid "valide"
     @nbr = nbr
     @arbrePrix.setNbr nbr
     @majDelais nbr
+    @options.setNbr nbr
+    @setPrix @calcPrix nbr
+  calcPrix: (nbr) ->
+    prixobj = selection_nbr @prix_data, nbr, true
+    if prixobj then prixobj.prix else 0
   setPrix: (prix) ->
     @arbrePrix.setVal(prix)
   setCouleur: (couleur) =>
     @couleur = ''+couleur # Les couleurs sont stockées sous forme de chaînes de caractères
-  ajout_option: (option) ->
-    @vue.ajout_option(option)
+    @majDelais @nbr
 
 class Commande
   #Groupement d'articles
   constructor: (conf) ->
     @vue = new CommandeVue(conf)
-    @arbrePrix = new ArbrePrix
-    @arbrePrix.on 'maj', (prixTotal) => @vue.setPrix prixTotal
-    @arbreDelais = new ArbreDelais
-    @arbreDelais.on 'maj', (delaisTotal) => @vue.setDelai delaiTotal
+    @arbrePrix = new ArbrePrix 0, 1
+    @arbrePrix.on 'maj', (prixTotal) =>
+      @vue.setPrix prixTotal
+    @arbreDelais = new ArbreDelais 0
+    @arbreDelais.on 'maj', (delaiTotal) => @vue.setDelai delaiTotal
     @articles = {}
 
-  ajoutArticle: (article) ->
+  ajout_article: (article) ->
     @articles[article.id] = article
     @arbrePrix.ajout_enfant article.arbrePrix
     @arbreDelais.ajout_enfant article.arbreDelais
