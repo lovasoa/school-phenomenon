@@ -32,6 +32,12 @@
 				{"nbr":30, "prix":35, "approx":true},
 				{"nbr":70, "prix":30},
 				{"nbr":100, "prix":25}
+			],
+			"delais" : [
+				{"nbr":30, "delai":21},
+				{"nbr":70, "delai":40, "exceptions": [
+					{"couleurs_exception":["22","33","76","noir"], "nouvdelai":21}
+				]}
 			]
 		},
 		{

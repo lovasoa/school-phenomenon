@@ -108,6 +108,10 @@ label > input {
 	border:1px solid black;
 }
 
+input.image-personnalisation {
+  display: inline;
+}
+
 .zone-personnalisation {
 	padding: 0;
 	position: relative;
@@ -117,6 +121,11 @@ label > input {
   /*Les objets qui sont "resizable" sont placés par jQuery UI dans une div .ui-wrapper*/
 	position: absolute !important;
 	top:0; left:0;
+}
+
+/** Choix date de livraison **/
+.ui-datepicker {
+  z-index: 3 !important;
 }
 
 /*** footer ***/
