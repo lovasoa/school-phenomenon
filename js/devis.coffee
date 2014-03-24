@@ -4,23 +4,20 @@ devis.js - pour school phenomenon
 ###
 
 
-selection_nbr = (liste, nbr, greater) ->
+selection_nbr = (liste, nbr, greater=false) ->
   # liste est une liste d’objets ayant un attribut 'nbr'.
   #		nbr est un nombre
   #		Retourne le premier élément de la liste tel que nbr < element.nbr
   #		ou null si il n'existe pas de tel élément
-  if greater
-    liste = liste[..].reverse()
-
-  for obj in liste
+  for obj in liste by (if greater then -1 else 1)
     if (not greater and nbr < obj.nbr) or (greater and nbr >= obj.nbr)
       return obj
   return null
 
-html_id = (str) ->
+html_id = (str) -> str.replace RegExp(" ", "g"), "_"
   # En html5, la seule restriction sur les id est qu'ils ne doivent pas contenir d'espaces
   # http://www.w3.org/TR/html-markup/global-attributes.html#common.attrs.id
-  str.replace RegExp(" ", "g"), "_"
+  
 
 maj_prix = ->
   # Calcul et affichage des prix à l’unité et du prix total
@@ -43,7 +40,6 @@ maj_prix = ->
 
     # Calcul du prix des personnalisations supplémentaires
     for perso in conf.personnalisations
-      perso = conf.personnalisations[j]
       input_id = html_id("perso-" + article.id + "-" + perso.perso)
       if $("#" + input_id).is(":checked")
         prix_perso_obj = selection_nbr(perso.prix, nbr, true)
@@ -75,17 +71,30 @@ $("#date-naissance input").on "blur change keyup", ->
     action = (if (date_dixhuitans > (new Date())) then "show" else "hide")
     $("#alerte-age")[action] 500
 
-# Date de livraison
-date_livraison_min = new Date()
-$("#date-livraison").datepicker
-  format: "dd/mm/yyyy"
-  onRender: (date) ->
-    (if date < date_livraison_min then "disabled" else "")
-
 $(".article-nbr").on "change mouseup keyup blur", maj_prix
 $(".checkbox-perso").on "change mouseup keyup blur", maj_prix
-conf = {}
 
+
+gestion_nbr_articles = (article) ->
+  # Gestion du nombre d'article minimum
+  id = article.id
+  $nbrInput = $("##{id}-nbr")
+  nbr = parseInt($nbrInput.val()) or 0
+  $btn = $("#personnaliser-#{id}")
+  if nbr is 0
+    $nbrInput.parent().removeClass("has-error").removeClass "has-success"
+    $nbrInput.tooltip "hide"
+    $btn.attr "disabled", true
+  else if nbr >= $nbrInput.attr("min")
+    $nbrInput.parent().removeClass("has-error").addClass "has-success"
+    $nbrInput.tooltip "hide"
+    $btn.attr "disabled", false
+  else
+    $nbrInput.parent().addClass("has-error").removeClass "has-success"
+    $nbrInput.tooltip "show"
+    $btn.attr "disabled", true
+
+conf = {}
 # Fill the colors dropdowns
 $.ajax
   url: "config/articles.json"
@@ -127,25 +136,11 @@ $.ajax
                       .data("article-id", article.id)
                       .attr("min", min)
                       .attr("title", "Impossible de passer une commande de moins de " + min + " articles.")
+                      .on('change focus blur keyup mouseup', -> gestion_nbr_articles(article))
                       .on("change focus blur mouseup", article, (event) ->
                         $this = $(this)
                         nbr = parseInt($this.val()) or 0
                         article = event.data
-
-                        # Gestion du nombre d'article minimum
-                        $btn = $("#personnaliser-" + article.id)
-                        if nbr is 0
-                          $this.parent().removeClass("has-error").removeClass "has-success"
-                          $this.tooltip "hide"
-                          $btn.attr "disabled", true
-                        else if nbr >= $this.attr("min")
-                          $this.parent().removeClass("has-error").addClass "has-success"
-                          $this.tooltip "hide"
-                          $btn.attr "disabled", false
-                        else
-                          $this.parent().addClass("has-error").removeClass "has-success"
-                          $this.tooltip "show"
-                          $btn.attr "disabled", true
 
                         #Gestion des restrictions de couleur sur les petits nombres d'articles
                         article_id = article.id

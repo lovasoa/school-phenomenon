@@ -39,9 +39,9 @@ $ ".image-personnalisation"
       .width(80).height("auto")
       .error -> alert "Impossible de lire l’image."
       .detach()
-      .appendTo $imagezone
       .one 'load', ->
-        $(this).resizable (
+        $(this).appendTo $imagezone
+               .resizable (
                   containment: "parent"
                   aspectRatio: true
                   stop: ->
