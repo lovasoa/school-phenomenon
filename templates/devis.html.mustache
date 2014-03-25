@@ -16,7 +16,7 @@
 
 		{{> errors.html}}
 
-		<form role="form" id="commande" method="post" action="validation_devis.php" >
+		<form role="form" id="commande" method="post" enctype="multipart/form-data" action="validation_devis.php" >
 		<input type="hidden" id="id_commande" name="id_commande" value="{{id_commande}}" />
 		<h2>À propos de vous</h2>
 		{{> fieldset_infos_demandeur.html}}
@@ -28,7 +28,8 @@
 		<div class="infogroup">
 		<p id="msg-delai-livraison">Votre commande peut vous être livrée au plus tôt dans <strong id="delai-livraison">40</strong> jours.</p>
 		<label>Date de livraison souhaitée:
-		<input id="date-livraison" name="date-livraison"  type="text"  required class="form-control" placeholder="jj/mm/aaaa" />
+		<input type="text" id="date-livraison" name="date-livraison" class="form-control"
+					 required placeholder="jj/mm/aaaa" pattern="(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[012])/20\d\d" />
 		</label>
 		</div>
 

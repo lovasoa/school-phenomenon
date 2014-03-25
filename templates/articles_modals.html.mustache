@@ -44,12 +44,12 @@
 							<ol>
 							<li data-zone-personnalisation = "#zone-personnalisation-{{id}}">
 							<input type="file" class="image-personnalisation"
-									name="{{id}}[files][][file]"
+									name="{{id}}-files[]"
 									accept="image/*" />
-							<input type="hidden" name="{{id}}[files][][x]" class="x" value="-1"/>
-							<input type="hidden" name="{{id}}[files][][y]" class="y" value="-1"/>
-			      	<input type="hidden" name="{{id}}[files][][w]" class="w" value="-1"/>
-							<input type="hidden" name="{{id}}[files][][h]" class="h" value="-1"/>
+							<input type="hidden" name="{{id}}[images][x][]" class="x" value="-1"/>
+							<input type="hidden" name="{{id}}[images][y][]" class="y" value="-1"/>
+			      	<input type="hidden" name="{{id}}[images][w][]" class="w" value="-1"/>
+							<input type="hidden" name="{{id}}[images][h][]" class="h" value="-1"/>
 							</li>
 							</ol>
 						</fieldset>
