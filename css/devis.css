@@ -22,20 +22,8 @@ header {
 	color:#666;
 }
 
-/** Prix total estimé **/
-#prix-devis-boite {
-	width: 300px;
-	position: fixed;
-	top: 150px;
-	right: 40px;
-	z-index:100;
-	opacity:.6;
-	transition:.5s;
-}
-
-#prix-devis-boite:hover {
-	opacity:1;
-	transition:.5s;
+#message-debut {
+	max-width:700px;
 }
 
 @media (max-width: 700px) {
@@ -43,8 +31,6 @@ header {
 		width: 100% !important;
 	}
 	#prix-devis-boite {
-		position:static;
-		opacity:1;
 		width:100%;
 	}
 }

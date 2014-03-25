@@ -21,13 +21,6 @@ class EventEmitter
     fun.apply(this,args) for fun in (@listeners[ev] or [])
     return this
 
-class InputWatcher extends EventEmitter
-  constructor: (inputElm) ->
-    @$input = $(inputElm)
-    @$input.on("change blur focus mouseup keyup",
-                 -> @emit('change', @$input.val())
-    )
-
 class ArbreValeurs extends EventEmitter
   defaultVal:0
   constructor: (val) ->

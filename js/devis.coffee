@@ -18,6 +18,9 @@ html_id = (str) -> str.replace RegExp(" ", "g"), "_"
   # En html5, la seule restriction sur les id est qu'ils ne doivent pas contenir d'espaces
   # http://www.w3.org/TR/html-markup/global-attributes.html#common.attrs.id
 
+# Preview du prix déplacable
+console.log $("#prix-devis-boite").draggable()
+
 #Ajout des "tooltips" (informations supplémentaires sur les champs à remplir)
 $("#association").tooltip()
 $("#date-naissance input").on "blur change keyup", ->

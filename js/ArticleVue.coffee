@@ -1,6 +1,13 @@
 ###
 Vues
 ###
+class InputWatcher extends EventEmitter
+  constructor: (inputElm) ->
+    @$input = $(inputElm)
+    @$input.on("change blur focus mouseup keyup",
+                 -> @emit('change', @$input.val())
+    )
+
 class ArticleVue extends EventEmitter
   constructor: (article_data)->
     @id = article_data.id
