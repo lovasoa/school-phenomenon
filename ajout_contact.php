@@ -1,15 +1,18 @@
  <?php
-require_once("google_api_info.php");
+require_once "google_api_info.php";
 
 $redirect_uri = "http://localhost/D%C3%A9veloppement/HISTU/ajout_contact.php";
 
 require_once ('Google/Client.php');
 require_once ('Google/Http/Request.php');
 
-require_once "load_mustache.php";
+require_once "fonctions/load_mustache.php";
 require_once "config/config.php";
+require_once 'fonctions/create_gcontact.php';
+require_once 'fonctions/erreurs.php';
 
-$tpl = $mustache->loadTemplate("ajout_contact.html");
+$tpl = getMustacheTemplate("ajout_contact.html");
+$errors = getErrorManager($tpl);
 
 session_start();
 
@@ -81,20 +84,17 @@ if (isset($_SESSION['access_token'])) {
 
 	// -----------------
 	// Ajout du contact
-	if (! isset($_SESSION['contact_id'])) {
-		fatal_error("Aucun contact à ajouter n’a été fourni.", "Aucun contact à ajouter");
+	$inputvarname = 'contact_id';
+	if (!isset($_SESSION[$inputvarname]) or
+			($contact_id = filter_var($_SESSION[$inputvarname], FILTER_VALIDATE_INT)) == 0) {
+		$errors->add("La variable définissant le contact à ajouter n’a pas une valeur correcte:",
+								"Aucun contact à ajouter",
+								$inputvarname,
+								TRUE);
 	}
-	$contact_id = intval($_SESSION['contact_id']);
-	unset($_SESSION['contact_id']);
+	unset($_SESSION[$inputvarname]);
 
-    $contact_filename = sprintf(CONTACT_FILENAME_FORMAT, $contact_id);
-
-	if ( !file_exists($contact_filename) ) {
-		fatal_error("Le contact à ajouter n'est plus présent sur le serveur. Cette erreur se produit notemment lorsque vous tentez d’ajouter le même contact pour la deuxième fois.",
-					"Contact introuvable");
-	}
-
-	$contact = @file_get_contents($contact_filename);
+		$contact = create_gcontact($contact_id);
     $add = new Google_Http_Request("https://www.google.com/m8/feeds/contacts/default/full/");
     $add->setRequestMethod("POST");
     $add->setPostBody($contact);
@@ -107,15 +107,17 @@ if (isset($_SESSION['access_token'])) {
 		// Sign the request with the token
 		$add = $client->getAuth()->sign($add);
 	} catch (Exception $e) {
-		fatal_error($e.". La solution est sans doute de vous déconnecter et de recommencer",
-			"Erreur d’identification Google");
+		$errors->add($e.". La solution est sans doute de vous déconnecter et de recommencer",
+			"Erreur d’identification Google", FALSE, FALSE);
 	}
 
     list($resp, $head, $code) = $client->getIo()->executeRequest($add);
 
 	if ($code !== "201") {
-		$msg = "Réponse négative de Google ($code) : " . html_entity_decode($resp);
-		fatal_error($msg);
+		$errors->add("Réponse négative de Google ($code) : " . html_entity_decode($resp),
+									"Erreur Google n°$code",
+									$contact,
+									TRUE);
 	}
 
 	// C'est bon, le contact a été ajouté
@@ -125,7 +127,6 @@ if (isset($_SESSION['access_token'])) {
 		"success" => TRUE,
 		"nom" => $contact->title
 	));
-	unlink($contact_filename);
 
     // The access token may have been updated lazily.
     $_SESSION['access_token'] = $client->getAccessToken();

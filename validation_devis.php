@@ -1,38 +1,27 @@
 <?php
 require_once 'config/config.php';
-require_once "create_gcontact_file.php";
-require_once "load_mustache.php";
-$tpl = $mustache->loadTemplate("validation_devis.html");
+require_once "fonctions/load_mustache.php";
+require_once "fonctions/erreurs.php";
 
+
+$tpl = getMustacheTemplate("validation_devis.html");
+$errors = getErrorManager($tpl);
 
 $fichier_articles = "config/articles.json";
 $donnees_articles = json_decode(file_get_contents($fichier_articles));
 
-$id_commande = time()*1e3 + rand(0,1e3);
+// Les is sont générés dans l’ordre chronologique. Cette ne risque pas de créer
+// des collisions tant que l’on ne s’approche pas d’une commande par seconde.
+$id_commande = (time()-1395802258)*10 + rand(0,10);
 
-/////////////////// Gestion des erreurs dans la commande ///////
-class Errors extends ArrayObject {
-	public function add ($message, $title=FALSE, $error_data=FALSE) {
-		$this[] = array("message"=>$message, "title"=>$title, "error_data"=>$error_data);
-	}
-}
-$errors = new Errors;
-
-function handle_error ($errno, $errmsg, $file, $line) {
-  global $errors, $tpl, $folder;
-
+function clean() {
+	global $folder;
 	foreach(scandir($folder) as $f) {
 		$f="$folder/$f";
 		if (!is_dir($f)) unlink($f);
 	}
 	rmdir($folder);
-  $moreinfos = ini_get('display_errors') ? basename($file).':'.$line : FALSE;
-	$errors->add ($errmsg, "Erreur ".$errno, $moreinfos);
-	die($tpl->render(array("errors"=>$errors)));
 }
-set_error_handler("handle_error");
-
-
 
 //////////////// Création du dossier de la commande ////
 $folder = sprintf(COMMAND_FOLDER_FORMAT, $id_commande);
@@ -66,6 +55,8 @@ function champ_necessaire() {
 }
 
 $devis = array();
+
+$devis['id-commande'] = $id_commande;
 
 /////////// Ajout de la date à laquelle la commande a été effectuée ////
 date_default_timezone_set('Europe/Paris');
@@ -154,7 +145,8 @@ foreach ($donnees_articles->liste_articles as $article_conf) {
 				$errors->add($msg, 'Trop petit nombre d’articles');
 				continue;
 			}
-			$article_devis = array( 'type' => $article_id,
+			$article_devis = array( 'id_article' => $article_id,
+															'nom_complet' => $article_conf->nom_complet,
 															'nbr' => $nbr,
 															'couleurs' => array(),
 															'personnalisations' => array(),
@@ -175,7 +167,7 @@ foreach ($donnees_articles->liste_articles as $article_conf) {
 			}
 			//// Validation des images personnalisées ////
 			$fileKey = "$article_id-files";
-			if (!isset($_FILES[$fileKey])) trigger_error("Champ fichier non reçu pour $article_id.");
+			if (!isset($_FILES[$fileKey])) $errors->add("Champ fichier non reçu pour $article_id.", FALSE,json_encode($_FILES), TRUE);
 			$files = $_FILES[$fileKey];
 			foreach ($files['error'] as $num_file => $error) {
 				$num_file = intval($num_file); //Protection contre les déformations de $_FILES
@@ -203,10 +195,11 @@ foreach ($donnees_articles->liste_articles as $article_conf) {
 					$y = filter_var($article['images']['y'][$num_file], FILTER_VALIDATE_FLOAT);
 					$w = filter_var($article['images']['w'][$num_file], FILTER_VALIDATE_FLOAT);
 					$h = filter_var($article['images']['w'][$num_file], FILTER_VALIDATE_FLOAT);
-					$article_devis['images'] = array(
+					$article_devis['images'][] = array(
 						"fichier" => $nouvfichier,
-						"x" => filter_var($article['images']['x'][$num_file], FILTER_VALIDATE_FLOAT), // Can be false
-						"y" => filter_var($article['images']['y'][$num_file], FILTER_VALIDATE_FLOAT),
+						"nom" => $nom,
+						"x" => 100*filter_var($article['images']['x'][$num_file], FILTER_VALIDATE_FLOAT), // Percentage. Can be false
+						"y" => 100*filter_var($article['images']['y'][$num_file], FILTER_VALIDATE_FLOAT),
 						"w" => filter_var($article['images']['w'][$num_file], FILTER_VALIDATE_FLOAT),
 						"h" => filter_var($article['images']['h'][$num_file], FILTER_VALIDATE_FLOAT),
 					);
@@ -225,20 +218,36 @@ foreach ($donnees_articles->liste_articles as $article_conf) {
 	}
 }
 
+////////// Ajout d’un fichier contenant les informations de la commande
+$devisjson = json_encode($devis);
+$res = file_put_contents($folder.'/commande.json', $devisjson);
+if (intval($res) < strlen($devisjson)) {
+	clean();
+	$errors->add('Impossible de sauvegarder la commande.');
+}
+
+/////////////// Envoi du mail //////////////
+$headers ='From: admin@school-phenomenon.net'."\n";
+$headers .='Content-Type: text/plain; charset="utf-8"'."\n";
+$headers .='Content-Transfer-Encoding: 8bit';
+$emails = str_replace(' ', ', ', GOOGLE_EMAILS_ADMINS);
+$adresse_visualisation = ADRESSE_SITE.'/visualisation_commande.php?id='.$id_commande;
+$res = mail ( $emails , 'Nouvelle commande School Phenomenon' , "
+	Une nouvelle commande vient d’être passée grâce au système de devis en ligne.
+	Vous pouvez la consulter à l’adresse suivante: $adresse_visualisation
+", $headers);
+if ($res === FALSE) {
+	$errors->add('Impossible d’envoyer un mail aux administrateurs', 'Échec de l’envoi');
+}
+
 /////////// Arrêt si il y a des erreurs /////////////////////
 if (count($errors) !== 0) {
+	clean();
 	trigger_error("Il y a des erreurs dans votre commande. Impossible de poursuivre.");
 }
 
-/////////// Création du fichier de contact à ajouter à l'agenda google ////////////////
-create_gcontact_file($_POST, $id_commande);
-
 echo $tpl->render(array(
-	"errors" => $errors,
-	"dbg" => json_encode(array(
-							"devis" => $devis,
-							"POST" => $_POST,
-							"FILES" => $_FILES
-						), JSON_PRETTY_PRINT)
+			"id"=> $id_commande,
+			"dbg"=> FALSE
 ));
 ?>

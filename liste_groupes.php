@@ -6,9 +6,10 @@ $redirect_uri = "http://localhost/D%C3%A9veloppement/HISTU/liste_groupes.php";
 require_once ('Google/Client.php');
 require_once ('Google/Http/Request.php');
 
-require_once "load_mustache.php";
+require_once "fonctions/load_mustache.php";
 require_once "config/config.php";
 
+$mustache = getConfiguredMustache();
 $tpl = $mustache->loadTemplate("liste_groupes.html");
 
 session_start();
