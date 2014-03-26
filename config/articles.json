@@ -42,6 +42,66 @@
 			]
 		},
 		{
+			"id" : "pull-zip",
+			"nom_complet" : "Pull zippé",
+			"nbr_min" : 30,
+			"choix_couleurs" : [
+				{
+					"type_couleur" : "principale",
+					"nom_complet" : "Couleur principale",
+					"restriction_couleurs" : [
+						{"nbr":70, "couleurs":["22","33","76","noir"]}
+					]
+				},
+				{
+					"type_couleur" : "doublure",
+					"nom_complet" : "Couleur de la doublure de la capuche",
+					"restriction_couleurs" : [
+						{"nbr":70, "couleurs":["86"]}
+					]
+				},
+				{
+					"type_couleur" : "cordons",
+					"nom_complet" : "Couleur des cordons",
+					"restriction_couleurs" : [
+						{"nbr":70, "couleurs":[]}
+					]
+				}
+			],
+			"prix" : [
+				{"nbr":30, "prix":38, "approx":true},
+				{"nbr":70, "prix":33},
+				{"nbr":100, "prix":28}
+			],
+			"delais" : [
+				{"nbr":30, "delai":21},
+				{"nbr":70, "delai":40, "exceptions": [
+					{"couleurs_exception":["22","33","76","noir"], "nouvdelai":21}
+				]}
+			]
+		},
+		{
+			"id" : "polo",
+			"nom_complet": "Polo",
+			"nbr_min" : 70,
+			"choix_couleurs" : [
+				{
+					"type_couleur" : "principale",
+					"nom_complet" : "Couleur principale",
+					"restriction_couleurs" : []
+				}
+			],
+			"prix" : [
+				{"nbr":70, "prix":24},
+				{"nbr":100, "prix":18}
+			],
+			"delais" : [
+				{"nbr":70, "delai":40, "exceptions": [
+					{"couleurs_exception":["22","33","76","noir"], "nouvdelai":21}
+				]}
+			]
+		},
+		{
 			"id" : "jogging",
 			"nom_complet" : "Jogging",
 			"nbr_min" : 70,
@@ -62,6 +122,39 @@
 			"prix" : [
 				{"nbr":70, "prix":29},
 				{"nbr":100, "prix":25}
+			],
+			"delais" : [
+				{"nbr":70, "delai":40, "exceptions": [
+					{"couleurs_exception":["22","33","76","noir"], "nouvdelai":21}
+				]}
+			]
+		},
+		{
+			"id" : "teddy",
+			"nom_complet" : "Teddy",
+			"nbr_min" : 70,
+			"choix_couleurs" : [
+				{
+					"type_couleur" : "principale",
+					"nom_complet" : "Couleur principale",
+					"restriction_couleurs" : []
+				},
+				{
+					"type_couleur" : "manches",
+					"nom_complet" : "Couleur des manches",
+					"restriction_couleurs" : [
+						{"nbr":70, "couleurs":[]}
+					]
+				}
+			],
+			"prix" : [
+				{"nbr":70, "prix":34},
+				{"nbr":100, "prix":28}
+			],
+			"delais" : [
+				{"nbr":70, "delai":40, "exceptions": [
+					{"couleurs_exception":["22","33","76","noir"], "nouvdelai":21}
+				]}
 			]
 		}
 	],

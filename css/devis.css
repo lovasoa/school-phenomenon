@@ -67,6 +67,10 @@ label > input {
 }
 
 /*** Personnalisation vêtements ***/
+#vetements > .row > div {
+	height:360px;
+	overflow:hidden;
+}
 .modal-extralarge {
 	width:90%;
 }
