@@ -176,10 +176,68 @@
 			]
 		},
 		{
+			"perso" : "flocage",
+			"nbr_min" : 30,
+			"prix" : [
+				{"nbr":30,"prix":5,"approx":true},
+				{"nbr":70,"prix":0}
+			]
+		},
+		{
 			"perso" : "feutrine",
 			"nbr_min" : 70,
 			"prix" : [
 				{"nbr":70,"prix":0}
+			]
+		},
+		{
+			"perso" : "écusson brodé",
+			"nbr_min" : 30,
+			"prix" : [
+				{"nbr":30,"prix":5,"approx":true},
+				{"nbr":70,"prix":0}
+			]
+		},
+		{
+			"perso" : "étiquette extérieure",
+			"nbr_min" : 70,
+			"prix" : [
+				{"nbr":70,"prix":0}
+			]
+		},
+		{
+			"perso" : "étiquette intérieure",
+			"nbr_min" : 70,
+			"prix" : [
+				{"nbr":70,"prix":0}
+			]
+		},
+		{
+			"perso" : "tissu appliqué",
+			"nbr_min" : 70,
+			"prix" : [
+				{"nbr":70,"prix":0}
+			]
+		},
+		{
+			"perso" : "coutures apparentes",
+			"nbr_min" : 70,
+			"prix" : [
+				{"nbr":70,"prix":0}
+			]
+		},
+		{
+			"perso" : "tissu gauffré/lisse de la doublure de la capuche",
+			"nbr_min" : 70,
+			"prix" : [
+				{"nbr":70,"prix":0}
+			]
+		},
+		{
+			"perso" : "coupe Homme/Femme",
+			"nbr_min" : 100,
+			"prix" : [
+				{"nbr":100,"prix":0}
 			]
 		}
 	],

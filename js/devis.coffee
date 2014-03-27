@@ -19,7 +19,7 @@ html_id = (str) -> str.replace RegExp(" ", "g"), "_"
   # http://www.w3.org/TR/html-markup/global-attributes.html#common.attrs.id
 
 # Preview du prix déplacable
-console.log $("#prix-devis-boite").draggable()
+$("#prix-devis-boite").draggable()
 
 #Ajout des "tooltips" (informations supplémentaires sur les champs à remplir)
 $("#association").tooltip()

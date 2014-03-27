@@ -227,7 +227,7 @@ if (intval($res) < strlen($devisjson)) {
 }
 
 /////////////// Envoi du mail //////////////
-$headers ='From: admin@school-phenomenon.net'."\n";
+$headers ='From: postmaster@school-phenomenon.net'."\n";
 $headers .='Content-Type: text/plain; charset="utf-8"'."\n";
 $headers .='Content-Transfer-Encoding: 8bit';
 $emails = str_replace(' ', ', ', GOOGLE_EMAILS_ADMINS);

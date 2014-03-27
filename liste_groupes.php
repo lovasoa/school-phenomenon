@@ -1,16 +1,15 @@
 <?php
 require_once("google_api_info.php");
 
-$redirect_uri = "http://localhost/D%C3%A9veloppement/HISTU/liste_groupes.php";
-
 require_once ('Google/Client.php');
 require_once ('Google/Http/Request.php');
 
 require_once "fonctions/load_mustache.php";
 require_once "config/config.php";
 
-$mustache = getConfiguredMustache();
-$tpl = $mustache->loadTemplate("liste_groupes.html");
+$redirect_uri = ADRESSE_SITE."/liste_groupes.php";
+
+$tpl = getMustacheTemplate("liste_groupes.html");
 
 session_start();
 
@@ -73,7 +72,7 @@ if (isset($_SESSION['access_token'])) {
 	$add = $client->getAuth()->sign($add);
 
     list($resp, $headers, $code) = $client->getIo()->executeRequest($add);
-	if ($code !== "200") {
+	if ($code != 200) {
 		fatal_error("Google n’a pas donné la répose attendue : ".$resp,
 					"Erreur ".$code);
 	}

@@ -1,8 +1,6 @@
  <?php
 require_once "google_api_info.php";
 
-$redirect_uri = "http://localhost/D%C3%A9veloppement/HISTU/ajout_contact.php";
-
 require_once ('Google/Client.php');
 require_once ('Google/Http/Request.php');
 
@@ -10,6 +8,8 @@ require_once "fonctions/load_mustache.php";
 require_once "config/config.php";
 require_once 'fonctions/create_gcontact.php';
 require_once 'fonctions/erreurs.php';
+
+$redirect_uri = ADRESSE_SITE."/ajout_contact.php";
 
 $tpl = getMustacheTemplate("ajout_contact.html");
 $errors = getErrorManager($tpl);
@@ -113,7 +113,7 @@ if (isset($_SESSION['access_token'])) {
 
     list($resp, $head, $code) = $client->getIo()->executeRequest($add);
 
-	if ($code !== "201") {
+	if ($code != 201) {
 		$errors->add("Réponse négative de Google ($code) : " . html_entity_decode($resp),
 									"Erreur Google n°$code",
 									$contact,

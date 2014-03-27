@@ -77,15 +77,22 @@ class Options
     @prix_options = new ArbrePrix 0, 1
     @nbr = 0
     @article_id = article_id
+    @$inputNbr = $ ('#'+@article_id+'-nbr')
   ajout: (option) ->
     @perso_id = html_id(option.perso)
     arbre = new ArbrePrix 0
     @prix_options_tab.push(arbre)
     @prix_options.ajout_enfant(arbre)
     @options.push option
-    $checkbox = $(html_id("#perso-#{@article_id}-#{@perso_id}"))
+    nbrmin = option.nbr_min
+    $checkbox = $ document.getElementById html_id "perso-#{@article_id}-#{@perso_id}"
     $checkbox.change (e) =>
-        arbre.setNbr (if $checkbox.is(':checked') then 1 else 0)
+        coche = $checkbox.is(':checked')
+        if coche and nbrmin > @$inputNbr.val()
+          $checkbox.attr 'checked',false
+          return alert "Vous devez faire une commande d’au moins #{nbrmin}
+                        articles pour pouvoir choisir cette option."
+        arbre.setNbr (if coche then 1 else 0)
         arbre.setVal @calcPrix option,@nbr
 
   calcPrix: (option, nbr) =>
