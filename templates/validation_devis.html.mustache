@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+	<meta charset="utf8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Devis — School Phenomenon</title>
+
+	{{> include_links.html}}
+	</head>
+	<body>
+	{{> header.html}}
+
+	<main class="container">
+		<h1>Merci</h1>
+		{{> errors.html}}
+		{{^ errors }}
+		<p class="well bg-info" id="message-debut">Merci de nous avoir fait confiance! Un email a été envoyé à l’administrateur, qui va maintenant examiner votre commande. Si vous contactez l’administateur à propos de cette commande, vous pouvez lui préciser qu’elle porte l’identifiant <code>{{id}}</code>.</p>
+		<div class="well">
+		Vous pouvez maintenant
+		<a href="http://school-phenomenon.com/" class="btn btn-lg btn-primary">Retourner sur le site web</a> ou
+		<a href="https://www.facebook.com/school.phenomenon" class="btn btn-lg btn-primary">Voir notre page facebook</a>
+		</div>
+		{{/ errors }}
+		{{#dbg}}
+			<pre><code>{{.}}</code></pre>
+		{{/dbg}}
+	</main>
+	</body>
+</html>

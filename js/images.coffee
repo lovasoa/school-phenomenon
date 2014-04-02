@@ -46,16 +46,18 @@ $ ".image-personnalisation"
                   aspectRatio: true
                   stop: ->
                     $this = $(this)
-                    $inputs.find('.w').val($this.width())
-                    $inputs.find('.h').val($this.height())
+                    w = 100 * $this.width() / $this.parent().width() #Pourcentage
+                    h = 100 * $this.height() / $this.parent().height()
+                    $inputs.find('.w').val(w)
+                    $inputs.find('.h').val(h)
                )
                .parent().draggable(
                  containment:"parent",
                  cursor:"move"
                  stop: ->
                    $this = $(this)
-                   x = $this.position().left / $this.parent().width()
-                   y = $this.position().top / $this.parent().height()
+                   x = 100 * $this.position().left / $this.parent().width()
+                   y = 100 * $this.position().top / $this.parent().height()
                    $inputs.find('.x').val(x)
                    $inputs.find('.y').val(y)
                )

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Devis — School Phenomenon</title>
+
+	<link rel="stylesheet" href="css/visualisation_commande.css"/>
+	{{> include_links.html}}
+	</head>
+	<body>
+	{{> header.html}}
+
+	<main class="container">
+		<h1>Visualisation de la commande</h1>
+
+		{{> errors.html}}
+		{{#commande}}
+		<p class="infos_commande">
+				Identifiant de la commande : <code>{{id_commande}}</code><br>
+				📆 Effectuée le {{date-commande}}
+		</p>
+		<h2>Client</h2>
+		<div class="infos-client row">
+			<div class="col-md-6">
+				<p><strong>{{#majuscule_debut}}{{prenom}}{{/majuscule_debut}} {{#majuscule_debut}}{{nom}}{{/majuscule_debut}}</strong><p>
+				<p>🚼 Né le {{date-naissance}}</p>
+				<p>Association: {{association}}</p>
+				<p>
+				<a class="btn btn-primary btn-md" href="ajout_contact.php?contact_id={{id_commande}}">Ajouter à mon carnet d’adresses Google</a>
+				</p>
+			</div>
+			<div class="col-md-6">
+				<p id="adresse">🌃 Adresse:
+				<a href="http://www.openstreetmap.org/search?query={{adresse}} {{code-postal}} {{ville}}" target="_blank">
+					{{adresse}}, {{code-postal}} {{ville}}
+				</a>
+				</p>
+				<p id="courriel">📨 Courriel:
+				<a href="mailto:{{email}}">{{email}}</a>
+				</p>
+				<p id="telephone">☎ Téléphone:
+				<a href="tel:{{telephone}}">{{telephone}}</a>
+				</p>
+			</div>
+		</div>
+		<h2>Articles commandés</h2>
+		{{#articles}}
+		<div class="article panel panel-primary" id="{{#html_id}}{{type}}{{/html_id}}">
+			<div class="panel-heading"><span class="nom-article">{{nom_complet}}</span> (<strong>{{nbr}}</strong>)</div>
+			<div class="panel-body">
+
+			<div class="row">
+				<div class="col-md-12 col-lg-8 zone-visualisation-article">
+					<img class="img-responsive visualisation-article" src="images/modeles/{{id_article}}.svg" alt="{{nom_complet}}" />
+					{{# images }}
+							<img src="{{fichier}}" alt="{{nom}}" class="imageperso"
+										style="top:{{y}}%;left:{{x}}%;{{#w}}width:{{w}}%;{{/w}}{{#h}}height:{{h}}%;{{/h}}"/>
+					{{/ images }}
+				</div>
+
+			<div class="col-md-12 col-lg-4">
+			<div class='row'>
+				<div class="col-md-4 col-lg-12">
+					🎨 Couleurs:<ol>
+					{{# couleurs }}<li>{{type}} : <span class='couleur'>{{couleur}}</span></li>{{/ couleurs }}
+					{{^ couleurs }}<li>Aucune personnalisation de couleur demandée</li>{{/ couleurs }}
+					</ol>
+				</div>
+				<div class="col-md-4 col-lg-12">
+					<p>☑ Options:<ol>
+					{{#personnalisations}}<li>{{.}}</li>{{/personnalisations}}
+					{{^personnalisations}}<li>Aucune option demandée</li>{{/personnalisations}}
+					</ol>
+				</div>
+				<div class="col-md-4 col-lg-12">
+					🔗 Télécharger les images de personnalisation:
+					<ul>
+						{{# images }}
+							<li><a href="{{fichier}}" download="{{nom}}">{{nom}}</a></li>
+						{{/ images }}
+						{{^ images }}
+							<li>Aucune image à télécharger</li>
+						{{/ images }}
+					</ul>
+				</div>
+
+				</div> <!--row-->
+			</div><!--col-md-4-->
+			</div><!--row-->
+			</div><!--panel-body-->
+		</div><!--panel-->
+		{{/articles}}
+
+		{{#infos-supplementaires}}
+		<div id="infos-supplémentaires" class="well">
+			Informations supplémentaires laisées par le client:
+			<pre>{{infos-supplementaires}}</pre>
+		</div>
+		{{/infos-supplementaires}}
+
+		{{/commande}}
+
+	</main>
+	<footer>
+		<p>Page de visualisation de commande de <strong>School Phenomenon</strong>, réalisée par <a href="https://github.com/lovasoa">Ophir LOJKINE</a>.</p>
+	</footer>
+
+	{{> include_scripts.html}}
+	<!-- Scripts coffeescript compilés -->
+	<script>var commande = {{{commande_json}}}</script>
+	<script src="js/visualisation_commande.js"></script>
+	</body>
+</html>

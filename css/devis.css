@@ -35,6 +35,10 @@ header {
 	}
 }
 
+.prix-unite {
+	color: #ff4136;
+}
+
 #prix-devis-boite > .panel-body {
 	color: green;
 	font-size:2em;
@@ -71,6 +75,12 @@ label > input {
 	height:360px;
 	overflow:hidden;
 }
+
+#vetements > .row > div > .thumbnail > img {
+	height:200px;
+	overflow:hidden;
+}
+
 .modal-extralarge {
 	width:90%;
 }

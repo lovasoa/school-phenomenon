@@ -131,7 +131,7 @@
 		},
 		{
 			"id" : "teddy",
-			"nom_complet" : "Teddy",
+			"nom_complet" : "Teddy simple",
 			"nbr_min" : 70,
 			"choix_couleurs" : [
 				{
@@ -142,6 +142,41 @@
 				{
 					"type_couleur" : "manches",
 					"nom_complet" : "Couleur des manches",
+					"restriction_couleurs" : [
+						{"nbr":70, "couleurs":[]}
+					]
+				}
+			],
+			"prix" : [
+				{"nbr":70, "prix":34},
+				{"nbr":100, "prix":28}
+			],
+			"delais" : [
+				{"nbr":70, "delai":40, "exceptions": [
+					{"couleurs_exception":["22","33","76","noir"], "nouvdelai":21}
+				]}
+			]
+		},
+		{
+			"id" : "teddy_rayures",
+			"nom_complet" : "Teddy rayé",
+			"nbr_min" : 70,
+			"choix_couleurs" : [
+				{
+					"type_couleur" : "principale",
+					"nom_complet" : "Couleur principale",
+					"restriction_couleurs" : []
+				},
+				{
+					"type_couleur" : "manches",
+					"nom_complet" : "Couleur des manches",
+					"restriction_couleurs" : [
+						{"nbr":70, "couleurs":[]}
+					]
+				},
+				{
+					"type_couleur" : "col",
+					"nom_complet" : "Couleur du col",
 					"restriction_couleurs" : [
 						{"nbr":70, "couleurs":[]}
 					]

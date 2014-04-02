@@ -198,8 +198,8 @@ foreach ($donnees_articles->liste_articles as $article_conf) {
 					$article_devis['images'][] = array(
 						"fichier" => $nouvfichier,
 						"nom" => $nom,
-						"x" => 100*filter_var($article['images']['x'][$num_file], FILTER_VALIDATE_FLOAT), // Percentage. Can be false
-						"y" => 100*filter_var($article['images']['y'][$num_file], FILTER_VALIDATE_FLOAT),
+						"x" => filter_var($article['images']['x'][$num_file], FILTER_VALIDATE_FLOAT), // Percentage. Can be false
+						"y" => filter_var($article['images']['y'][$num_file], FILTER_VALIDATE_FLOAT),
 						"w" => filter_var($article['images']['w'][$num_file], FILTER_VALIDATE_FLOAT),
 						"h" => filter_var($article['images']['h'][$num_file], FILTER_VALIDATE_FLOAT),
 					);
@@ -229,13 +229,15 @@ if (intval($res) < strlen($devisjson)) {
 /////////////// Envoi du mail //////////////
 $headers ='From: postmaster@school-phenomenon.net'."\n";
 $headers .='Content-Type: text/plain; charset="utf-8"'."\n";
-$headers .='Content-Transfer-Encoding: 8bit';
+$headers .='Content-Transfer-Encoding: binary'; //Allows long lines
 $emails = str_replace(' ', ', ', GOOGLE_EMAILS_ADMINS);
 $adresse_visualisation = ADRESSE_SITE.'/visualisation_commande.php?id='.$id_commande;
-$res = mail ( $emails , 'Nouvelle commande School Phenomenon' , "
-	Une nouvelle commande vient d’être passée grâce au système de devis en ligne.
-	Vous pouvez la consulter à l’adresse suivante: $adresse_visualisation
-", $headers);
+$emailtxt = getMustacheTemplate('email.txt')->render(array(
+	'adresse_site' => ADRESSE_SITE,
+	'id' => $id_commande,
+	'devis' => $devis
+));
+$res = mail ( $emails , 'Nouvelle commande School Phenomenon' , $emailtxt, $headers);
 if ($res === FALSE) {
 	$errors->add('Impossible d’envoyer un mail aux administrateurs', 'Échec de l’envoi');
 }
